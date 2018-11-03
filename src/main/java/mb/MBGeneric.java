@@ -17,53 +17,53 @@ public class MBGeneric implements Serializable {
 
 	private static final long serialVersionUID = -4704358361982942050L;
 
-	public void addMessageInfo(String detalhe) {
-		addMessage(FacesMessage.SEVERITY_INFO, detalhe);
+	public void addMessageInfo(String message) {
+		addMessage(FacesMessage.SEVERITY_INFO, message);
 	}
 
-	public void addMessageError(String detalhe) {
-		addMessage(FacesMessage.SEVERITY_ERROR, detalhe);
+	public void addMessageError(String message) {
+		addMessage(FacesMessage.SEVERITY_ERROR, message);
 	}
 
-	public void addMessageFatal(String detalhe) {
-		addMessage(FacesMessage.SEVERITY_FATAL, detalhe);
+	public void addMessageFatal(String message) {
+		addMessage(FacesMessage.SEVERITY_FATAL, message);
 	}
 
-	public void addMessageWarn(String detalhe) {
-		addMessage(FacesMessage.SEVERITY_WARN, detalhe);
+	public void addMessageWarn(String message) {
+		addMessage(FacesMessage.SEVERITY_WARN, message);
 	}
 	
-	public void addMessageInfo(String sumario, String detalhe) {
-		addMessage(FacesMessage.SEVERITY_INFO, detalhe, sumario);
+	public void addMessageInfo(String sumary, String message) {
+		addMessage(FacesMessage.SEVERITY_INFO, message, sumary);
 	}
 
-	public void addMessageError(String sumario, String detalhe) {
-		addMessage(FacesMessage.SEVERITY_ERROR, detalhe, sumario);
+	public void addMessageError(String sumary, String message) {
+		addMessage(FacesMessage.SEVERITY_ERROR, message, sumary);
 	}
 
-	public void addMessageFatal(String sumario, String detalhe) {
-		addMessage(FacesMessage.SEVERITY_FATAL, detalhe, sumario);
+	public void addMessageFatal(String sumary, String message) {
+		addMessage(FacesMessage.SEVERITY_FATAL, message, sumary);
 	}
 
-	public void addMessageWarn(String sumario, String detalhe) {
-		addMessage(FacesMessage.SEVERITY_WARN, detalhe, sumario);
+	public void addMessageWarn(String sumary, String message) {
+		addMessage(FacesMessage.SEVERITY_WARN, message, sumary);
 	}
 
-	private void addMessage(Severity severityInfo, String detalhe) {
-		addMessage(severityInfo, detalhe, null);
+	private void addMessage(Severity severityInfo, String message) {
+		addMessage(severityInfo, message, null);
 	}
 	
 	
-	private void addMessage(Severity severityInfo, String detalhe, String sumario) {
-		if(sumario == null){
-			sumario = "Error!";
+	private void addMessage(Severity severityInfo, String message, String sumary) {
+		if(sumary == null){
+			sumary = "Error!";
 			if (FacesMessage.SEVERITY_WARN == severityInfo) {
-				sumario = "Warning!";
+				sumary = "Warning!";
 			} else if (FacesMessage.SEVERITY_INFO == severityInfo) {
-				sumario = "Information:";
+				sumary = "Information:";
 			}
 		}
-		FacesMessage message = new FacesMessage(severityInfo, sumario,detalhe);
-		FacesContext.getCurrentInstance().addMessage(null, message);
+		FacesMessage facesMessage = new FacesMessage(severityInfo, sumary, message);
+		FacesContext.getCurrentInstance().addMessage(null, facesMessage);
 	}
 }

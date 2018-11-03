@@ -1,0 +1,27 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jstl/core" xmlns:lang="pt-BR" lang="pt-br">
+<h:head>
+	<meta name="viewport" content="width=device-width" />
+	<title><h:outputText value="Supero" /></title>
+</h:head>
+<h:body id="body">
+	<f:view>
+		<center>
+			<p:panel header="Entrar" style="width: 300px;">
+				<h:panelGrid columns="1" cellpadding="10">
+					<h:form>
+						<p:growl id="msglogin" showDetail="true" />
+						<p:inputText id="txUserName" value="#{indexMB.tbUser.txUserName}" />
+						<p:watermark for="txUserName" value="Usuário" />
+						<br/>
+						<p:password id="txPassword" value="#{indexMB.tbUser.txPassword}" />
+						<p:watermark for="txPassword" value="Senha" />
+						<br/>
+						<p:commandButton value="Entrar" type="submit" action="#{indexMB.authenticate()}" update="msglogin" />
+					</h:form>
+				</h:panelGrid>
+			</p:panel>
+		</center>
+	</f:view>
+</h:body>
+</html>

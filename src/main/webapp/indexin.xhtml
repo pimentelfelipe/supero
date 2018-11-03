@@ -1,0 +1,43 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jstl/core" xmlns:lang="pt-BR" lang="pt-br">
+<h:head>
+	<meta name="viewport" content="width=device-width" />
+	<title><h:outputText value="Supero" /></title>
+</h:head>
+<h:body id="body">
+	<f:view>
+		#{indexinMB.init()}
+		<center>
+			<p:outputPanel style="width: 850px;">
+				<h:form id="frmIndexin">
+					<span style="float: right;">
+				    	<p:commandButton icon="fa fa-fw fa-sign-out" type="submit" action="#{indexinMB.logout()}" />
+				    </span>
+				    <br/><br/><br/><br/>
+					<p:dataGrid value="#{indexinMB.tbTaskList}" var="objResource" columns="2">
+				        <f:facet name="header">
+				            <span style="float: left;"><h:outputText value="Tasks" /></span>
+				            <span style="float: right;">
+				            	<p:commandButton value="Novo" icon="fa fa-fw fa-plus" type="submit" action="#{indexinMB.newTask()}" />
+				           	</span>
+				           	<br/><br/>
+				        </f:facet>
+				        
+						<p:panel>
+				            <h:panelGrid columns="2">
+				            	<h:column>
+					            	<p:commandLink actionListener="#{indexinMB.viewCollaborator(objResource)}">
+					                	<h:outputText value="#{objResource.txName}" style="font-weight: bold;" />
+					                </p:commandLink><br/>
+					                <h:outputText value="#{objResource.tbRole.txRoleName}" style="font-size: 9pt;" /><br/>
+					                <i class="fa #{objResource.tbDepartament.txFwIconName}" style="margin-right: 5px;"></i><h:outputText value="#{objResource.tbDepartament.txDepartamentName}" style="font-size: 9pt;" />
+					            </h:column>
+				            </h:panelGrid>
+				        </p:panel>
+				    </p:dataGrid>
+				</h:form>
+			</p:outputPanel>
+		</center>
+	</f:view>
+</h:body>
+</html>

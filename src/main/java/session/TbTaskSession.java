@@ -5,58 +5,42 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 
-import bo.TbUserBO;
-import dto.TbKeyDTO;
-import dto.TbUserDTO;
-import model.entity.TbUser;
+import bo.TbTaskBO;
+import dto.TbTaskDTO;
+import model.entity.TbTask;
 
 @Stateless
-public class TbUserSession {
+public class TbTaskSession {
 	
 	@EJB
-	private TbUserBO objBO;
+	private TbTaskBO objBO;
 	
-	public TbUserDTO authenticate(TbUserDTO objDTO) {
-		objDTO = objBO.authenticate(objDTO);
-		return objDTO;
-	}
 	
-	public TbKeyDTO validateToken(TbKeyDTO objDTO) {
-		objDTO = objBO.validateToken(objDTO);
-		return objDTO;
-	}
-	
-	public TbKeyDTO finalizeToken(TbKeyDTO objDTO) {
-		objDTO = objBO.finalizeToken(objDTO);
-		return objDTO;
-	}
-	
-	public TbUserDTO findAll(TbUserDTO objDTO) {
+	public TbTaskDTO findAll(TbTaskDTO objDTO) {
 		objDTO.setCollection(objBO.getObjDAO().findAll());
 		return objDTO;
 	}
 	
-	public TbUserDTO find(TbUserDTO objDTO) {
+	public TbTaskDTO find(TbTaskDTO objDTO) {
 		objDTO.setEntity(objBO.getObjDAO().find(objDTO.getEntity().getId()));
 		return objDTO;
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	public TbUserDTO save(TbUserDTO objDTO) {
-		TbUser entity = objDTO.getEntity();
+	public TbTaskDTO save(TbTaskDTO objDTO) {
+		TbTask entity = objDTO.getEntity();
 		if (entity.getId() == null || entity.getId() == 0) {
 			entity = objBO.getObjDAO().save(entity);
 		} else {
 			objBO.getObjDAO().update(entity);
 			objBO.getObjDAO().flush();
 		}
-
 		objDTO.setEntity(entity);
 		return objDTO;
 	}
 	
-	public TbUserDTO delete(TbUserDTO objDTO) {
-		TbUser entity = objDTO.getEntity();
+	public TbTaskDTO delete(TbTaskDTO objDTO) {
+		TbTask entity = objDTO.getEntity();
 		if (entity.getId() != null || entity.getId() != 0) {
 			entity = objBO.getObjDAO().find(entity.getId());
 			objBO.getObjDAO().delete(entity);

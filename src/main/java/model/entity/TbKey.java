@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class TbKey implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -19,11 +21,10 @@ public class TbKey implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	
-	@JoinColumn(name = "idUser", referencedColumnName = "id")
+	@JsonBackReference
 	@ManyToOne
+	@JoinColumn(name = "idUser", referencedColumnName = "id")
 	private TbUser tbUser;
-	
 	
 	@Column
 	private String txKey;
@@ -35,11 +36,8 @@ public class TbKey implements Serializable {
 	private Date dtEnd;
 	
 	
-	
 	public TbKey() {
 	}
-	
-	
 
 	public Long getId() {
 		return id;
@@ -49,52 +47,35 @@ public class TbKey implements Serializable {
 		this.id = id;
 	}
 
-
-
 	public TbUser getTbUser() {
 		return tbUser;
 	}
-
-
 
 	public void setTbUser(TbUser tbUser) {
 		this.tbUser = tbUser;
 	}
 
-
-
 	public String getTxKey() {
 		return txKey;
 	}
-
-
 
 	public void setTxKey(String txKey) {
 		this.txKey = txKey;
 	}
 
-
-
 	public Date getDtStart() {
 		return dtStart;
 	}
-
-
 
 	public void setDtStart(Date dtStart) {
 		this.dtStart = dtStart;
 	}
 
-
-
 	public Date getDtEnd() {
 		return dtEnd;
 	}
 
-
-
 	public void setDtEnd(Date dtEnd) {
 		this.dtEnd = dtEnd;
 	}
-
 }

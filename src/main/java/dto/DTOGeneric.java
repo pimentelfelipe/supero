@@ -9,15 +9,15 @@ public class DTOGeneric<T> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private T entity;
-	private boolean sucesso = true;
+	private boolean success = true;
 	private Collection<T> collection;
-	private Map<String, String> parametroValor;
+	private Map<String, String> parameterValue;
 
 	public DTOGeneric() {
 	}
 	
-	public DTOGeneric(boolean sucesso) {
-		this.sucesso = sucesso;
+	public DTOGeneric(boolean success) {
+		this.success = success;
 	}
 	
 	public DTOGeneric(T entity) {
@@ -49,15 +49,15 @@ public class DTOGeneric<T> implements Serializable {
 		this.collection = collection;
 	}
 	
-	public boolean isSucesso() {
-		return sucesso;
+	public boolean isSuccess() {
+		return success;
 	}
 
-	public void setSucesso(boolean sucesso) {
-		this.sucesso = sucesso;
+	public void setSuccess(boolean success) {
+		this.success = success;
 	}
-	public void setSucessoFalse() {
-		this.sucesso = false;
+	public void setSuccessFalse() {
+		this.success = false;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -65,11 +65,11 @@ public class DTOGeneric<T> implements Serializable {
 		return (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 	}
 
-	public Map<String, String> getParametroValor() {
-		return parametroValor;
+	public Map<String, String> getParameterValue() {
+		return parameterValue;
 	}
 
-	public void setParametroValor(Map<String, String> parametroValor) {
-		this.parametroValor = parametroValor;
+	public void setParameterValue(Map<String, String> parameterValue) {
+		this.parameterValue = parameterValue;
 	}
 }
