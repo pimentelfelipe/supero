@@ -1,6 +1,7 @@
 package ws;
 
 import javax.ejb.EJB;
+import javax.ejb.Stateless;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -15,6 +16,7 @@ import dto.TbTaskDTO;
 import model.entity.TbTask;
 import session.TbTaskSession;
 
+@Stateless
 @Path("/TbTask")
 public class TbTaskWS {
 	

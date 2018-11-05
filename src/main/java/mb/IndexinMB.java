@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -16,6 +17,7 @@ import javax.ws.rs.core.Response;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.primefaces.event.DragDropEvent;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -27,7 +29,9 @@ import dto.TbUserDTO;
 import model.entity.TbKey;
 import model.entity.TbTask;
 import model.entity.TbUser;
+import session.TbTaskSession;
 import session.TbUserSession;
+import ws.TbTaskWS;
 import ws.TbUserWS;
 
 @ManagedBean
@@ -40,10 +44,19 @@ public class IndexinMB extends MBGeneric implements Serializable {
 	private TbUserSession tbUserSession;
 	
 	@EJB
+	private TbTaskSession tbTaskSession;
+	
+	@EJB
 	private TbUserWS tbUserWS;
+	
+	@EJB
+	private TbTaskWS tbTaskWS;
 	
 	private TbTaskDTO tbTaskDTO;
 	private Collection<TbTask> tbTaskList = new ArrayList<TbTask>();
+	private Collection<TbTask> tbTaskListStarted = new ArrayList<TbTask>();
+	private Collection<TbTask> tbTaskListFinished = new ArrayList<TbTask>();
+	private Collection<TbTask> tbTaskListDeleted = new ArrayList<TbTask>();
 	private TbTask tbTask = new TbTask();
 	
 	private TbUserDTO tbUserDTO;
@@ -143,7 +156,25 @@ public class IndexinMB extends MBGeneric implements Serializable {
 		if (!validateToken()) {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("index.faces");
 		} else {
-			// TODO List all tasks 
+			tbTaskDTO = new TbTaskDTO();
+			tbTaskDTO = tbTaskSession.findAll(tbTaskDTO);
+			tbTaskList = new ArrayList<TbTask>();
+			tbTaskListStarted = new ArrayList<TbTask>();
+			tbTaskListFinished = new ArrayList<TbTask>();
+			tbTaskListDeleted = new ArrayList<TbTask>();
+			tbTaskList.addAll(tbTaskDTO.getCollection());
+			
+			if (tbTaskDTO.getCollection() != null) {
+				for (TbTask tbTaskTemp : tbTaskDTO.getCollection()) {
+					if (tbTaskTemp.getTxStatus().toLowerCase().equals("started")) {
+						tbTaskListStarted.add(tbTaskTemp);
+					} else if (tbTaskTemp.getTxStatus().toLowerCase().equals("finished")) {
+						tbTaskListFinished.add(tbTaskTemp);
+					} else if (tbTaskTemp.getTxStatus().toLowerCase().equals("deleted")) {
+						tbTaskListDeleted.add(tbTaskTemp);
+					}
+				}
+			}
 		}
 	}
 	
@@ -172,6 +203,134 @@ public class IndexinMB extends MBGeneric implements Serializable {
 	
 	
 	
+	public void onStartedTaskDrop(DragDropEvent ddEvent) throws IOException {
+        tbTask = (TbTask) ddEvent.getData();
+        this.startTask();
+        this.init();
+    }
+	
+	public void onFinishedTaskDrop(DragDropEvent ddEvent) throws IOException {
+		tbTask = (TbTask) ddEvent.getData();
+		this.finishTask();
+		this.init();
+    }
+	
+	public void onDeletedTaskDrop(DragDropEvent ddEvent) throws IOException {
+		tbTask = (TbTask) ddEvent.getData();
+		this.deleteTask();
+		this.init();
+    }
+	
+	
+	public void findTask() throws IOException{
+		if (!validateToken()) {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("index.faces");
+		} else {
+			tbTaskDTO = new TbTaskDTO();
+			tbTaskDTO = tbTaskSession.find(tbTaskDTO);
+		}
+	}
+	
+	public void newTask() throws IOException{
+		if (!validateToken()) {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("index.faces");
+		} else {
+			tbTask = new TbTask();
+			tbTask.setTxStatus("Started");
+			tbTask.setDtStart(new Date());
+			FacesContext.getCurrentInstance().getExternalContext().redirect("task.faces");
+		}
+	}
+	
+	public void editTask(TbTask objResource) throws IOException{
+		if (!validateToken()) {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("index.faces");
+		} else {
+			tbTask = objResource;
+			FacesContext.getCurrentInstance().getExternalContext().redirect("task.faces");
+		}
+	}
+	
+	public void viewTasks() throws IOException{
+		if (!validateToken()) {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("index.faces");
+		} else {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("indexin.faces");
+		}
+	}
+	
+	public void saveTask() throws IOException{
+		if (!validateToken()) {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("index.faces");
+		} else {
+			tbTask.setDtEdit(new Date());
+			tbTaskDTO = new TbTaskDTO();
+			tbTaskDTO.setSuccessFalse();
+			tbTaskDTO.setEntity(tbTask);
+			tbTaskDTO = tbTaskSession.save(tbTaskDTO);
+			if (tbTaskDTO.isSuccess()) {
+				addMessageInfo("Saved");
+			} else {
+				addMessageWarn("Error");
+			}
+		}
+	}
+	
+	public void startTask() throws IOException{
+		if (!validateToken()) {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("index.faces");
+		} else {
+			tbTask.setTxStatus("Started");
+			tbTask.setDtStart(new Date());
+			tbTaskDTO = new TbTaskDTO();
+			tbTaskDTO.setSuccessFalse();
+			tbTaskDTO.setEntity(tbTask);
+			tbTaskDTO = tbTaskSession.save(tbTaskDTO);
+			if (tbTaskDTO.isSuccess()) {
+				addMessageInfo("Saved");
+			} else {
+				addMessageWarn("Error");
+			}
+		}
+	}
+	
+	public void finishTask() throws IOException{
+		if (!validateToken()) {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("index.faces");
+		} else {
+			tbTask.setTxStatus("Finished");
+			tbTask.setDtEnd(new Date());
+			tbTaskDTO = new TbTaskDTO();
+			tbTaskDTO.setSuccessFalse();
+			tbTaskDTO.setEntity(tbTask);
+			tbTaskDTO = tbTaskSession.save(tbTaskDTO);
+			if (tbTaskDTO.isSuccess()) {
+				addMessageInfo("Saved");
+			} else {
+				addMessageWarn("Error");
+			}
+		}
+	}
+	
+	public void deleteTask() throws IOException{
+		if (!validateToken()) {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("index.faces");
+		} else {
+			tbTask.setTxStatus("Deleted");
+			tbTask.setDtDelete(new Date());
+			tbTaskDTO = new TbTaskDTO();
+			tbTaskDTO.setSuccessFalse();
+			tbTaskDTO.setEntity(tbTask);
+			tbTaskDTO = tbTaskSession.save(tbTaskDTO);
+			if (tbTaskDTO.isSuccess()) {
+				addMessageInfo("Saved");
+			} else {
+				addMessageWarn("Error");
+			}
+		}
+	}
+	
+	
 	
 
 	public TbTaskDTO getTbTaskDTO() {
@@ -188,6 +347,30 @@ public class IndexinMB extends MBGeneric implements Serializable {
 
 	public void setTbTaskList(Collection<TbTask> tbTaskList) {
 		this.tbTaskList = tbTaskList;
+	}
+
+	public Collection<TbTask> getTbTaskListStarted() {
+		return tbTaskListStarted;
+	}
+
+	public void setTbTaskListStarted(Collection<TbTask> tbTaskListStarted) {
+		this.tbTaskListStarted = tbTaskListStarted;
+	}
+
+	public Collection<TbTask> getTbTaskListFinished() {
+		return tbTaskListFinished;
+	}
+
+	public void setTbTaskListFinished(Collection<TbTask> tbTaskListFinished) {
+		this.tbTaskListFinished = tbTaskListFinished;
+	}
+
+	public Collection<TbTask> getTbTaskListDeleted() {
+		return tbTaskListDeleted;
+	}
+
+	public void setTbTaskListDeleted(Collection<TbTask> tbTaskListDeleted) {
+		this.tbTaskListDeleted = tbTaskListDeleted;
 	}
 
 	public TbTask getTbTask() {

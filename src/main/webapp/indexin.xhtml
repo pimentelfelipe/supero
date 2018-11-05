@@ -3,38 +3,103 @@
 <h:head>
 	<meta name="viewport" content="width=device-width" />
 	<title><h:outputText value="Supero" /></title>
+	<h:outputStylesheet library="css" name="font-awesome.css" />
 </h:head>
 <h:body id="body">
 	<f:view>
 		#{indexinMB.init()}
 		<center>
 			<p:outputPanel style="width: 850px;">
+				<script type="text/javascript">
+				    function startedHandleDrop(event, ui) {
+				        var startedDropped = ui.draggable;
+				        startedDropped.fadeOut('fast');
+				    }
+				    function finishedHandleDrop(event, ui) {
+				        var finishedDropped = ui.draggable;
+				        finishedDropped.fadeOut('fast');
+				    }
+				    function deletedHandleDrop(event, ui) {
+				        var deletedDropped = ui.draggable;
+				        deletedDropped.fadeOut('fast');
+				    }
+				</script>
 				<h:form id="frmIndexin">
 					<span style="float: right;">
 				    	<p:commandButton icon="fa fa-fw fa-sign-out" type="submit" action="#{indexinMB.logout()}" />
 				    </span>
-				    <br/><br/><br/><br/>
-					<p:dataGrid value="#{indexinMB.tbTaskList}" var="objResource" columns="2">
-				        <f:facet name="header">
-				            <span style="float: left;"><h:outputText value="Tasks" /></span>
-				            <span style="float: right;">
-				            	<p:commandButton value="Novo" icon="fa fa-fw fa-plus" type="submit" action="#{indexinMB.newTask()}" />
-				           	</span>
-				           	<br/><br/>
-				        </f:facet>
-				        
-						<p:panel>
-				            <h:panelGrid columns="2">
-				            	<h:column>
-					            	<p:commandLink actionListener="#{indexinMB.viewCollaborator(objResource)}">
-					                	<h:outputText value="#{objResource.txName}" style="font-weight: bold;" />
-					                </p:commandLink><br/>
-					                <h:outputText value="#{objResource.tbRole.txRoleName}" style="font-size: 9pt;" /><br/>
-					                <i class="fa #{objResource.tbDepartament.txFwIconName}" style="margin-right: 5px;"></i><h:outputText value="#{objResource.tbDepartament.txDepartamentName}" style="font-size: 9pt;" />
-					            </h:column>
-				            </h:panelGrid>
-				        </p:panel>
-				    </p:dataGrid>
+				    <span style="float: left;">
+				    	<p:commandButton value="New Task" icon="fa fa-fw fa-plus" type="submit" action="#{indexinMB.newTask()}" />
+				    </span>
+				    <br/><br/>
+					<p:fieldset id="startedTasksField" legend="Started Tasks" style="width: 30%; padding: 0; margin: 0; display: inline-block; margin-right: 10px;">
+				        <p:outputPanel id="startedTasksDropArea">
+					        <p:dataGrid id="startedTasks" var="startedTask" value="#{indexinMB.tbTaskListStarted}" columns="1">
+					            <p:panel id="startedPnl" header="#{startedTask.txTitle}" style="text-align:center">
+					                <h:panelGrid columns="1" style="width:100%">
+					                    <p:commandLink actionListener="#{indexinMB.editTask(startedTask)}">
+					                		<h:outputText value="#{startedTask.txTitle}" style="font-weight: bold;" />
+					                	</p:commandLink><br/>
+					                    <h:outputText value="#{startedTask.txDesc}" /><br/>
+					                    Created/Started: <h:outputText value="#{startedTask.dtStart}" />
+					                    Edited: <h:outputText value="#{startedTask.dtEdit}" />
+					                    Finished: <h:outputText value="#{startedTask.dtEnd}" />
+					                    Deleted: <h:outputText value="#{startedTask.dtDelete}" />
+					                </h:panelGrid>
+					            </p:panel>
+					            <p:draggable for="startedPnl" revert="true" handle=".ui-panel-titlebar" stack=".ui-panel"/>
+					        </p:dataGrid>
+					    </p:outputPanel>
+				    </p:fieldset>
+				    <p:droppable for="startedTasksField" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="finishedTasks" onDrop="startedHandleDrop">
+				        <p:ajax listener="#{indexinMB.onStartedTaskDrop}" update="startedTasksDropArea startedTasks" />
+				    </p:droppable>
+
+					<p:fieldset id="finishedTasksField" legend="Finished Tasks" style="width: 30%; padding: 0; margin: 0; display: inline-block;">
+				        <p:outputPanel id="finishedTasksDropArea">
+					        <p:dataGrid id="finishedTasks" var="finishedTask" value="#{indexinMB.tbTaskListFinished}" columns="1">
+					            <p:panel id="finishedPnl" header="#{finishedTask.txTitle}" style="text-align:center">
+					                <h:panelGrid columns="1" style="width:100%">
+					                    <p:commandLink actionListener="#{indexinMB.editTask(finishedTask)}">
+					                		<h:outputText value="#{finishedTask.txTitle}" style="font-weight: bold;" />
+					                	</p:commandLink><br/>
+					                    <h:outputText value="#{finishedTask.txDesc}" /><br/>
+					                    Created/Started: <h:outputText value="#{finishedTask.dtStart}" />
+					                    Edited: <h:outputText value="#{finishedTask.dtEdit}" />
+					                    Finished: <h:outputText value="#{finishedTask.dtEnd}" />
+					                    Deleted: <h:outputText value="#{finishedTask.dtDelete}" />
+					                </h:panelGrid>
+					            </p:panel>
+					            <p:draggable for="finishedPnl" revert="true" handle=".ui-panel-titlebar" stack=".ui-panel"/>
+					        </p:dataGrid>
+				        </p:outputPanel>
+				    </p:fieldset>
+				    <p:droppable for="finishedTasksField" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="startedTasks" onDrop="finishedHandleDrop">
+				        <p:ajax listener="#{indexinMB.onFinishedTaskDrop}" update="finishedTasksDropArea finishedTasks" />
+				    </p:droppable>
+				    
+				    <p:fieldset id="deletedTasksField" legend="Deleted Tasks" style="width: 30%; padding: 0; margin: 0; display: inline-block; margin-left: 10px;">
+				        <p:outputPanel id="deletedTasksDropArea">
+					        <p:dataGrid id="deletedTasks" var="deletedTask" value="#{indexinMB.tbTaskListDeleted}" columns="1">
+					            <p:panel id="deletedPnl" header="#{deletedTask.txTitle}" style="text-align:center">
+					                <h:panelGrid columns="1" style="width:100%">
+					                    <p:commandLink actionListener="#{indexinMB.editTask(deletedTask)}">
+					                		<h:outputText value="#{deletedTask.txTitle}" style="font-weight: bold;" />
+					                	</p:commandLink><br/>
+					                    <h:outputText value="#{deletedTask.txDesc}" /><br/>
+					                    Created/Started: <h:outputText value="#{deletedTask.dtStart}" />
+					                    Edited: <h:outputText value="#{deletedTask.dtEdit}" />
+					                    Finished: <h:outputText value="#{deletedTask.dtEnd}" />
+					                    Deleted: <h:outputText value="#{deletedTask.dtDelete}" />
+					                </h:panelGrid>
+					            </p:panel>
+<!-- 					            <p:draggable for="deletedPnl" revert="true" handle=".ui-panel-titlebar" stack=".ui-panel"/> -->
+					        </p:dataGrid>
+				        </p:outputPanel>
+				    </p:fieldset>
+				    <p:droppable for="deletedTasksField" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="finishedTasks" onDrop="deletedHandleDrop">
+				        <p:ajax listener="#{indexinMB.onDeletedTaskDrop}" update="deletedTasksDropArea deletedTasks" />
+				    </p:droppable>
 				</h:form>
 			</p:outputPanel>
 		</center>

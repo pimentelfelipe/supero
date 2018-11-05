@@ -1,0 +1,47 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jstl/core" xmlns:lang="pt-BR" lang="pt-br">
+<h:head>
+	<meta name="viewport" content="width=device-width" />
+	<title><h:outputText value="Supero" /></title>
+	<h:outputStylesheet library="css" name="font-awesome.css" />
+</h:head>
+<h:body id="body">
+	<f:view>
+		
+		<center>
+			<p:panel style="width: 850px; text-align: left;">
+				<h:form id="frmTask">
+					<p:growl id="msgtask" showDetail="true" />
+					
+					<span style="float: right;">
+						<p:commandButton icon="fa fa-fw fa-save" type="submit" action="#{indexinMB.saveTask()}" update="frmTask" />
+						<p:commandButton icon="fa fa-fw fa-play" type="submit" action="#{indexinMB.startTask()}" update="frmTask" />
+						<p:commandButton icon="fa fa-fw fa-stop" type="submit" action="#{indexinMB.finishTask()}" update="frmTask" />
+						<p:commandButton icon="fa fa-fw fa-trash" type="submit" action="#{indexinMB.deleteTask()}" update="frmTask" />
+						<p:commandButton icon="fa fa-fw fa-arrow-left" type="submit" action="#{indexinMB.viewTasks()}" />
+					</span>
+					<br/><br/>
+					
+					<h:panelGrid columns="2">
+		            	<h:column>
+			            	<p:outputLabel for="txTitle" value="Task Title" />
+							<p:inputText id="txTitle" value="#{indexinMB.tbTask.txTitle}" style="width: 100%;" />
+							<br/><br/>
+			            </h:column>
+			            <h:column>
+			            	<p:outputLabel for="txStatus" value="Task Status" />
+							<p:inputText id="txStatus" value="#{indexinMB.tbTask.txStatus}" style="width: 100%;" readonly="true" />
+							<br/><br/>
+			            </h:column>
+		            </h:panelGrid>
+					<br/><br/>
+					<p:outputLabel for="txDesc" value="Task Description" />
+					<p:inputTextarea id="txDesc" value="#{indexinMB.tbTask.txDesc}" style="width: 100%;" />
+					<br/>
+					<br/>
+				</h:form>
+			</p:panel>
+		</center>
+	</f:view>
+</h:body>
+</html>

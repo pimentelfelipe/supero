@@ -1,5 +1,7 @@
 package session;
 
+import java.util.Date;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -30,11 +32,13 @@ public class TbTaskSession {
 	public TbTaskDTO save(TbTaskDTO objDTO) {
 		TbTask entity = objDTO.getEntity();
 		if (entity.getId() == null || entity.getId() == 0) {
+			entity.setDtStart(new Date());
 			entity = objBO.getObjDAO().save(entity);
 		} else {
 			objBO.getObjDAO().update(entity);
 			objBO.getObjDAO().flush();
 		}
+		objDTO.setSuccess(true);
 		objDTO.setEntity(entity);
 		return objDTO;
 	}
