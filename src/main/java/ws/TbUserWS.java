@@ -51,6 +51,7 @@ public class TbUserWS {
 			ObjectMapper mapper = new ObjectMapper();
 			TbUser entity = mapper.readValue(strJsonEntity, TbUser.class);
 			objDTO.setEntity(entity);
+			objDTO.setSuccessFalse();
 			objDTO = objSession.authenticate(objDTO);
 			response = mapper.writeValueAsString(objDTO);
 		} catch (Exception e) {
@@ -67,6 +68,7 @@ public class TbUserWS {
 		objDTO.setEntity(new TbUser());
 		objDTO.getEntity().setTxUserName(txUserName);
 		objDTO.getEntity().setTxPassword(txPassword);
+		objDTO.setSuccessFalse();
 		objDTO = objSession.authenticate(objDTO);
 		ObjectMapper mapper = new ObjectMapper();
 		String response = null;

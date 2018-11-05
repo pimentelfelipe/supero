@@ -56,6 +56,7 @@ public class TbUserBO {
 		        objDTO.getEntity().setTxKey(sb.toString());
 		        tbKey.setDtStart(new Date());
 		        objKeyDAO.saveFlush(tbKey);
+		        objDTO.setSuccess(true);
 			} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}

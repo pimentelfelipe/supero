@@ -35,7 +35,8 @@
 					<p:fieldset id="startedTasksField" legend="Started Tasks" style="width: 30%; padding: 0; margin: 0; display: inline-block; margin-right: 10px;">
 				        <p:outputPanel id="startedTasksDropArea">
 					        <p:dataGrid id="startedTasks" var="startedTask" value="#{indexinMB.tbTaskListStarted}" columns="1">
-					            <p:panel id="startedPnl" header="#{startedTask.txTitle}" style="text-align:center">
+<!-- 					            <p:panel id="startedPnl" header="#{startedTask.txTitle}" style="text-align:center"> -->
+								<p:panel id="startedPnl" header="Drag'n Drop" style="text-align:center">
 					                <h:panelGrid columns="1" style="width:100%">
 					                    <p:commandLink actionListener="#{indexinMB.editTask(startedTask)}">
 					                		<h:outputText value="#{startedTask.txTitle}" style="font-weight: bold;" />
@@ -58,7 +59,8 @@
 					<p:fieldset id="finishedTasksField" legend="Finished Tasks" style="width: 30%; padding: 0; margin: 0; display: inline-block;">
 				        <p:outputPanel id="finishedTasksDropArea">
 					        <p:dataGrid id="finishedTasks" var="finishedTask" value="#{indexinMB.tbTaskListFinished}" columns="1">
-					            <p:panel id="finishedPnl" header="#{finishedTask.txTitle}" style="text-align:center">
+<!-- 					            <p:panel id="finishedPnl" header="#{finishedTask.txTitle}" style="text-align:center"> -->
+					            <p:panel id="finishedPnl" header="Drag'n Drop" style="text-align:center">
 					                <h:panelGrid columns="1" style="width:100%">
 					                    <p:commandLink actionListener="#{indexinMB.editTask(finishedTask)}">
 					                		<h:outputText value="#{finishedTask.txTitle}" style="font-weight: bold;" />
@@ -81,7 +83,8 @@
 				    <p:fieldset id="deletedTasksField" legend="Deleted Tasks" style="width: 30%; padding: 0; margin: 0; display: inline-block; margin-left: 10px;">
 				        <p:outputPanel id="deletedTasksDropArea">
 					        <p:dataGrid id="deletedTasks" var="deletedTask" value="#{indexinMB.tbTaskListDeleted}" columns="1">
-					            <p:panel id="deletedPnl" header="#{deletedTask.txTitle}" style="text-align:center">
+<!-- 					            <p:panel id="deletedPnl" header="#{deletedTask.txTitle}" style="text-align:center"> -->
+					            <p:panel id="deletedPnl" style="text-align:center">
 					                <h:panelGrid columns="1" style="width:100%">
 					                    <p:commandLink actionListener="#{indexinMB.editTask(deletedTask)}">
 					                		<h:outputText value="#{deletedTask.txTitle}" style="font-weight: bold;" />

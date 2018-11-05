@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml2/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+	<head>
+		<title>Supero</title>
+		<meta charset="utf-8" />
+    	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link href="resources/css/bootstrap.min.css" rel="stylesheet" />
+		<link href="resources/css/font-awesome.css" rel="stylesheet" />
+		<link href="resources/css/app.css" rel="stylesheet" />
+	</head>
+	<body ng-app="Indexin" ng-controller="getUser" ng-init="getUser();">
+		<center>
+			<div class="container">
+				<div class="row" style="max-width: 970px; width: 100%;">
+					<button type="button" class="btn btn-danger" ng-controller="logout" ng-click="logout(true);" style="float: right; display: block;">
+        				<i class="fa fa-power-off"></i>
+     				</button>
+     				<div id="loadingLogout" style="float: right; display: none;"><i class="fa fa-spinner fa-pulse fa-2x"></i></div>
+     				<br/><br/><br/>
+					<div class="col-md-4">
+				        <div class="panel panel-default">
+  							<div class="panel-heading">Started Tasks</div>
+  							<div class="panel-body">
+								<ul class="list-group">
+									<li ng-repeat="resource in tbTaskListStarted" class="list-group-item list-group-item" style="margin-bottom: 3px; text-align: left;">
+								  		<b>{{resource.txTitle}}</b><br/>
+								  		{{resource.txDesc}}<br/>
+								  		<span style="font-size: 7pt;">
+								  			<b>Created/Started:</b> {{resource.dtStart | date}}<br/>
+								  			<b>Edited:</b> {{resource.dtEdit | date}}<br/>
+								  			<b>Finished:</b> {{resource.dtEnd | date}}<br/>
+								  			<b>Deleted:</b> {{resource.dtDelete | date}}<br/>
+								  		</span>
+								  	</li>	  
+								</ul>
+							</div>
+						</div>
+					</div>
+					
+					<div class="col-md-4">
+				        <div class="panel panel-success">
+  							<div class="panel-heading">Finished Tasks</div>
+  							<div class="panel-body">
+								<ul class="list-group">
+									<li ng-repeat="resource in tbTaskListFinished" class="list-group-item list-group-item-success" style="margin-bottom: 3px; text-align: left;">
+										<b>{{resource.txTitle}}</b><br/>
+								  		{{resource.txDesc}}<br/>
+								  		<span style="font-size: 7pt;">
+								  			<b>Created/Started:</b> {{resource.dtStart | date}}<br/>
+								  			<b>Edited:</b> {{resource.dtEdit | date}}<br/>
+								  			<b>Finished:</b> {{resource.dtEnd | date}}<br/>
+								  			<b>Deleted:</b> {{resource.dtDelete | date}}<br/>
+								  		</span>
+									</li>	  
+								</ul>
+							</div>
+						</div>
+					</div>
+					
+					<div class="col-md-4">
+				        <div class="panel panel-danger">
+  							<div class="panel-heading">Deleted Tasks</div>
+  							<div class="panel-body">
+								<ul class="list-group">
+									<li ng-repeat="resource in tbTaskListDeleted" class="list-group-item list-group-item-danger" style="margin-bottom: 3px; text-align: left;">
+										<b>{{resource.txTitle}}</b><br/>
+								  		{{resource.txDesc}}<br/>
+								  		<span style="font-size: 7pt;">
+								  			<b>Created/Started:</b> {{resource.dtStart | date}}<br/>
+								  			<b>Edited:</b> {{resource.dtEdit | date}}<br/>
+								  			<b>Finished:</b> {{resource.dtEnd | date}}<br/>
+								  			<b>Deleted:</b> {{resource.dtDelete | date}}<br/>
+								  		</span>
+									</li>	  
+								</ul>
+							</div>
+						</div>
+					</div>
+					
+		      	</div>
+		    </div>
+      	</center>
+      	<script src="resources/js/sha512.js"></script>
+		<script src="resources/js/jquery.js"></script>
+		<script src="resources/js/angular.min.js"></script>
+		<script src="resources/js/bootstrap.min.js"></script>
+		<script src="resources/js/app.js"></script>
+	</body>
+</html>
