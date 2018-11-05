@@ -80,6 +80,7 @@ function getUser($scope, $http) {
 	$scope.tbTaskListStarted = [];
 	$scope.tbTaskListFinished = [];
 	$scope.tbTaskListDeleted = [];
+	
 	$scope.getUser = function() {
 		$scope.register.id = getCookie(idCookie);
 		$scope.register.key = getCookie(keyCookie);
@@ -117,6 +118,66 @@ function getUser($scope, $http) {
 		} else {
 			window.open("index.html","_self");
 		}
+	};
+	
+	$scope.newTask = function() {
+		$scope.objTask = {"txStatus":"Started"};
+		$scope.titlePanel = "New Task";
+		$('#divTask').show();
+	};
+	
+	$scope.editTask = function(objTask) {
+		$scope.objTask = objTask;
+		$scope.titlePanel = "Edit Task";
+		$('#divTask').show();
+	};
+	
+	$scope.closeTask = function() {
+		$('#divTask').hide();
+	};
+	
+	
+	$scope.saveTask = function() {
+		$scope.objTask.dtEdit = new Date();
+		$http.post(serviceURIBase + "TbTask/save", $scope.objTask, { headers: {'Content-Type': 'application/json'} })
+	    .success(function (response) {
+	    	$scope.objTask = response.entity;
+	    	$scope.getUser();
+	    	$('#divTask').hide();
+	    });
+	};
+	
+	$scope.startTask = function() {
+		$scope.objTask.txStatus = "Started";
+		$scope.objTask.dtStart = new Date();
+		$http.post(serviceURIBase + "TbTask/save", $scope.objTask, { headers: {'Content-Type': 'application/json'} })
+	    .success(function (response) {
+	    	$scope.objTask = response.entity;
+	    	$scope.getUser();
+	    	$('#divTask').hide();
+	    });
+	};
+	
+	$scope.finishTask = function() {
+		$scope.objTask.txStatus = "Finished";
+		$scope.objTask.dtEnd = new Date();
+		$http.post(serviceURIBase + "TbTask/save", $scope.objTask, { headers: {'Content-Type': 'application/json'} })
+	    .success(function (response) {
+	    	$scope.objTask = response.entity;
+	    	$scope.getUser();
+	    	$('#divTask').hide();
+	    });
+	};
+	
+	$scope.deleteTask = function() {
+		$scope.objTask.txStatus = "Deleted";
+		$scope.objTask.dtDelete = new Date();
+		$http.post(serviceURIBase + "TbTask/save", $scope.objTask, { headers: {'Content-Type': 'application/json'} })
+	    .success(function (response) {
+	    	$scope.objTask = response.entity;
+	    	$scope.getUser();
+	    	$('#divTask').hide();
+	    });
 	};
 }
 

@@ -1,7 +1,7 @@
 Após efetuar a configuração conforme orientações abaixo utilize 
 a seguinte conta para autenticação na aplicação:
 
-UsuÃ¡rio: administrador
+Usuário: administrador
 Senha: 123456
 
 OBS: para inclusão de usuários do sistema, suas senhas devem ser armazenadas digeridas 

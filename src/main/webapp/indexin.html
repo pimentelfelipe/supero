@@ -5,6 +5,7 @@
 		<meta charset="utf-8" />
     	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
     	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    	<link href="resources/css/angular-material.css" rel="stylesheet" />
 		<link href="resources/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="resources/css/font-awesome.css" rel="stylesheet" />
 		<link href="resources/css/app.css" rel="stylesheet" />
@@ -13,17 +14,57 @@
 		<center>
 			<div class="container">
 				<div class="row" style="max-width: 970px; width: 100%;">
+					<button type="button" class="btn btn-success" ng-click="newTask();" style="float: left; display: block;">
+        				<i class="fa fa-plus"></i>
+     				</button>
+					
 					<button type="button" class="btn btn-danger" ng-controller="logout" ng-click="logout(true);" style="float: right; display: block;">
         				<i class="fa fa-power-off"></i>
      				</button>
      				<div id="loadingLogout" style="float: right; display: none;"><i class="fa fa-spinner fa-pulse fa-2x"></i></div>
      				<br/><br/><br/>
+					
+					
+					
+					<div id="divTask" style="display: none;">
+						<div class="panel panel-success">
+							<div class="panel-heading" style="padding: 5px 5px 5px 10px; height: 40px;">
+								<span>{{titlePanel}}</span>
+								<span style="float: right; cursor: pointer;" ng-click="closeTask();"><i class="fa fa-times fa-2x"></i></span>
+							</div>
+							<div class="panel-body" style="padding: 7px 7px 7px 7px; border: 0px solid #cccccc;">
+								<div class="resource-info">
+									<form name="frmNewTask"  method="post" ng-submit="saveTask();">
+										<div class="form-group">
+						          			<input type="text" class="form-control" placeholder="Title" ng-model="objTask.txTitle" />
+						          		</div>
+						          		<div class="form-group">
+						          			<input type="text" class="form-control" placeholder="Status" ng-model="objTask.txStatus" disabled="disabled" />
+						          		</div>
+						          		<div class="form-group">
+						          			<textarea rows="4" placeholder="Description" ng-model="objTask.txDesc" style="width: 100%;"></textarea>
+						          		</div>
+			        					<div style="width: 100%; text-align: right;">
+				        					<button type="button" class="btn btn-success" ng-click="saveTask();"><i class="fa fa-save"></i> Save</button>
+				        					<button type="button" class="btn btn-success" ng-click="startTask();"><i class="fa fa-play"></i> Start</button>
+				        					<button type="button" class="btn btn-info" ng-click="finishTask();"><i class="fa fa-stop"></i> Finish</button>
+				        					<button type="button" class="btn btn-danger" ng-click="deleteTask();"><i class="fa fa-trash"></i> Delete</button>
+				        				</div>
+						      	  	</form>
+						      	  	<br/>
+		      	  					<span class="alert alert-success" id="createTaskSuccess" role="alert" style="display: none;">{{objTask.message}}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					
 					<div class="col-md-4">
 				        <div class="panel panel-default">
   							<div class="panel-heading">Started Tasks</div>
   							<div class="panel-body">
 								<ul class="list-group">
-									<li ng-repeat="resource in tbTaskListStarted" class="list-group-item list-group-item" style="margin-bottom: 3px; text-align: left;">
+									<li ng-repeat="resource in tbTaskListStarted" class="list-group-item list-group-item" style="margin-bottom: 3px; text-align: left; cursor: pointer;" ng-click="editTask(resource);">
 								  		<b>{{resource.txTitle}}</b><br/>
 								  		{{resource.txDesc}}<br/>
 								  		<span style="font-size: 7pt;">
@@ -39,11 +80,11 @@
 					</div>
 					
 					<div class="col-md-4">
-				        <div class="panel panel-success">
+				        <div class="panel panel-info">
   							<div class="panel-heading">Finished Tasks</div>
   							<div class="panel-body">
 								<ul class="list-group">
-									<li ng-repeat="resource in tbTaskListFinished" class="list-group-item list-group-item-success" style="margin-bottom: 3px; text-align: left;">
+									<li ng-repeat="resource in tbTaskListFinished" class="list-group-item list-group-item-info" style="margin-bottom: 3px; text-align: left; cursor: pointer;" ng-click="editTask(resource);">
 										<b>{{resource.txTitle}}</b><br/>
 								  		{{resource.txDesc}}<br/>
 								  		<span style="font-size: 7pt;">
@@ -63,7 +104,7 @@
   							<div class="panel-heading">Deleted Tasks</div>
   							<div class="panel-body">
 								<ul class="list-group">
-									<li ng-repeat="resource in tbTaskListDeleted" class="list-group-item list-group-item-danger" style="margin-bottom: 3px; text-align: left;">
+									<li ng-repeat="resource in tbTaskListDeleted" class="list-group-item list-group-item-danger" style="margin-bottom: 3px; text-align: left; cursor: pointer;" ng-click="editTask(resource);">
 										<b>{{resource.txTitle}}</b><br/>
 								  		{{resource.txDesc}}<br/>
 								  		<span style="font-size: 7pt;">
@@ -81,9 +122,21 @@
 		      	</div>
 		    </div>
       	</center>
+      	
+      	<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        
       	<script src="resources/js/sha512.js"></script>
 		<script src="resources/js/jquery.js"></script>
 		<script src="resources/js/angular.min.js"></script>
+		<script src="resources/js/angular-sanitize.js"></script>
+		<script src="resources/js/angular-locale_pt-br.js"></script>
+		<script src="resources/js/angular-animate.min.js"></script>
+		<script src="resources/js/angular-aria.min.js"></script>
+		<script src='resources/js/angular-messages.min.js'></script>
+		<script src="resources/js/angular-material.js"></script>
+		
+		
 		<script src="resources/js/bootstrap.min.js"></script>
 		<script src="resources/js/app.js"></script>
 	</body>
